@@ -74,5 +74,18 @@ namespace Dashboard.Models
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dx_sales_proc_Result>("dx_sales_proc", dbNameParameter, fromParameter, toParameter, customerParameter, salerParameter);
         }
+    
+        public virtual ObjectResult<dx_monthly_expenses_Result> dx_monthly_expenses(string dbName, Nullable<int> month)
+        {
+            var dbNameParameter = dbName != null ?
+                new ObjectParameter("dbName", dbName) :
+                new ObjectParameter("dbName", typeof(string));
+    
+            var monthParameter = month.HasValue ?
+                new ObjectParameter("month", month) :
+                new ObjectParameter("month", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dx_monthly_expenses_Result>("dx_monthly_expenses", dbNameParameter, monthParameter);
+        }
     }
 }

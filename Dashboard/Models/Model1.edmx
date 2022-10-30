@@ -58,6 +58,10 @@
           <Parameter Name="FROM" Type="nvarchar" Mode="In" />
           <Parameter Name="tO" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="dx_monthly_expenses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dbName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="month" Type="int" Mode="In" />
+        </Function>
         <Function Name="dx_sales_proc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="dbName" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="from" Type="nvarchar" Mode="In" />
@@ -102,6 +106,10 @@
             <Parameter Name="to" Mode="In" Type="String" />
             <Parameter Name="customer" Mode="In" Type="String" />
             <Parameter Name="saler" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="dx_monthly_expenses" ReturnType="Collection(DashboardDBModel.dx_monthly_expenses_Result)">
+            <Parameter Name="dbName" Mode="In" Type="String" />
+            <Parameter Name="month" Mode="In" Type="Int32" />
           </FunctionImport>
         </EntityContainer>
         <EntityType Name="ar_customers">
@@ -150,6 +158,12 @@
         <ComplexType Name="dx_sales_proc_Result">
           <Property Type="Int32" Name="nMonth" Nullable="true" />
           <Property Type="Decimal" Name="nvalue" Nullable="true" Precision="38" Scale="3" />
+        </ComplexType>
+        <ComplexType Name="dx_monthly_expenses_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="s_desc" Nullable="false" MaxLength="25" />
+          <Property Type="Decimal" Name="CurrentMonth" Nullable="true" Precision="38" Scale="3" />
+          <Property Type="Decimal" Name="PreviousMonth" Nullable="true" Precision="38" Scale="3" />
         </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
@@ -223,6 +237,16 @@
               <ComplexTypeMapping TypeName="DashboardDBModel.dx_sales_proc_Result">
                 <ScalarProperty Name="nMonth" ColumnName="nMonth" />
                 <ScalarProperty Name="nvalue" ColumnName="nvalue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="dx_monthly_expenses" FunctionName="DashboardDBModel.Store.dx_monthly_expenses">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DashboardDBModel.dx_monthly_expenses_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="s_desc" ColumnName="s_desc" />
+                <ScalarProperty Name="CurrentMonth" ColumnName="CurrentMonth" />
+                <ScalarProperty Name="PreviousMonth" ColumnName="PreviousMonth" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
