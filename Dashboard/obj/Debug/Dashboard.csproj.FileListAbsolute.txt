@@ -70,3 +70,7 @@ D:\My-Github\Dashboard\Dashboard\obj\Debug\Dashboard.csproj.CoreCompileInputs.ca
 D:\My-Github\Dashboard\Dashboard\obj\Debug\Dashboard.csproj.CopyComplete
 D:\My-Github\Dashboard\Dashboard\obj\Debug\Dashboard.dll
 D:\My-Github\Dashboard\Dashboard\obj\Debug\Dashboard.pdb
+D:\My-Github\Dashboard\Dashboard\bin\EntityFramework.dll
+D:\My-Github\Dashboard\Dashboard\bin\EntityFramework.SqlServer.dll
+D:\My-Github\Dashboard\Dashboard\bin\EntityFramework.xml
+D:\My-Github\Dashboard\Dashboard\bin\EntityFramework.SqlServer.xml

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="98d955820c184b7289f896556260ac8c" Name="Diagram1">
+        <EntityTypeShape EntityType="DashboardDBModel.Company" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DashboardDBModel.ar_customers" Width="1.5" PointX="5.75" PointY="0.5" />
+        <EntityTypeShape EntityType="DashboardDBModel.ar_salesmen" Width="1.5" PointX="2.875" PointY="2.25" />
+        <EntityTypeShape EntityType="DashboardDBModel.Balance" Width="1.5" PointX="5.625" PointY="3.375" />
+        <EntityTypeShape EntityType="DashboardDBModel.Expens" Width="1.5" PointX="1" PointY="3.5" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

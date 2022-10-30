@@ -1,0 +1,65 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="~/CustomScripts/vendors/simple-line-icons/css/simple-line-icons.css">
+    <link rel="stylesheet" href="~/CustomScripts/vendors/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/CustomScripts/vendors/css/vendor.bundle.base.css">
+    <link rel="stylesheet" href="~/CustomScripts/css/style.css" />
+</head>
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "Login Failed, check details");
+    <body>
+        <div class="container-scroller">
+            <div class="container-fluid page-body-wrapper full-page-wrapper">
+                <div class="content-wrapper d-flex align-items-center auth">
+                    <div class="row flex-grow">
+                        <div class="col-lg-3 mx-auto">
+                            <div class="auth-form-light text-center p-3">
+                                <div class="brand-logo">
+                                    <h4 style="font-family:serif; font-weight:bolder;"> <span style="color: #850909; ">Xceer</span> <span style="color: #898484;">ERP Solution</span> </h4>
+                                    <img src="~/CustomScripts/images/Xceer/logo.png" />
+                                    <h1 style="color: #959393; font-size:16px;">مدائن الجزيرة لتقنية المعلومات والحاسب الآلي</h1>
+                                    <h2 style="color: #a6a2a2; font-size: 15px; ">K-group dashboard</h2>
+                                    <h4 class="btn-primary text-center" style="margin-top:15%;"> Login </h4>
+                                </div>
+                                <form class="pt-3 text-left">
+                                    <div class="form-group">
+                                        @*<label for="usrname"><span class="glyphicon glyphicon-user"></span>User Name</label>*@
+                                        <input type="text" class="form-control" placeholder="Username" name="userName">
+                                    </div>
+                                    <div class="form-group">
+                                        @*<label for="psw"><span class="glyphicon glyphicon-eye-open"></span>Password</label>*@
+                                        <input type="password" class="form-control " placeholder="Password" name="password">
+                                    </div>
+                                    <div class="mt-3">
+                                        <button class="btn btn-block btn-primary btn-lg font-weight-medium auth-form-btn" value="Submit">تسجيل الدخول</button>
+                                    </div>
+                                </form>
+                                <br />
+                                @{
+                                    if (ViewBag.result != null)
+                                    {
+                                        <p class="text-center alert-danger">@ViewBag.result</p>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="~/CustomScripts/vendors/js/vendor.bundle.base.js"></script>
+        <script src="~/CustomScripts/js/off-canvas.js"></script>
+        <script src="~/CustomScripts/js/misc.js"></script>
+    </body>
+}
+</html>

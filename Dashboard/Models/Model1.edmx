@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DashboardDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ar_customers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="n_customer_id" Type="int" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_customer_name" Type="nvarchar" MaxLength="150" />
+        </EntityType>
+        <EntityType Name="ar_salesmen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_salesman_id" Type="int" />
+          <Property Name="s_salesman_name" Type="nvarchar" MaxLength="150" />
+          <Property Name="n_CustomerCount" Type="int" />
+        </EntityType>
+        <EntityType Name="Balances">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_DbName" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_TreasureName" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_Value" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Companies">
+          <Key>
+            <PropertyRef Name="n_CompId" />
+          </Key>
+          <Property Name="n_CompId" Type="int" Nullable="false" />
+          <Property Name="s_CompName" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_CompNameEng" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_dbName" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Expenses">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_credit" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="n_debit" Type="decimal" Precision="18" Scale="3" />
+          <Property Name="d_doc_date" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_account_no" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Function Name="dx_expenses_PROC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dbName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="FROM" Type="nvarchar" Mode="In" />
+          <Parameter Name="tO" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="dx_sales_proc" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dbName" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="from" Type="nvarchar" Mode="In" />
+          <Parameter Name="to" Type="nvarchar" Mode="In" />
+          <Parameter Name="customer" Type="nvarchar" Mode="In" />
+          <Parameter Name="saler" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="DashboardDBModelStoreContainer">
+          <EntitySet Name="ar_customers" EntityType="Self.ar_customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ar_salesmen" EntityType="Self.ar_salesmen" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Balances" EntityType="Self.Balances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DashboardDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="n_CompId" />
+          </Key>
+          <Property Name="n_CompId" Type="Int32" Nullable="false" />
+          <Property Name="s_CompName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_CompNameEng" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_dbName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityContainer Name="DashboardDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Self.Company" />
+          <EntitySet Name="ar_customers" EntityType="DashboardDBModel.ar_customers" />
+          <EntitySet Name="ar_salesmen" EntityType="DashboardDBModel.ar_salesmen" />
+          <EntitySet Name="Balances" EntityType="DashboardDBModel.Balance" />
+          <EntitySet Name="Expenses" EntityType="DashboardDBModel.Expens" />
+          <FunctionImport Name="dx_expenses_PROC" ReturnType="Collection(DashboardDBModel.dx_expenses_PROC_Result)">
+            <Parameter Name="dbName" Mode="In" Type="String" />
+            <Parameter Name="FROM" Mode="In" Type="String" />
+            <Parameter Name="tO" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="dx_sales_proc" ReturnType="Collection(DashboardDBModel.dx_sales_proc_Result)">
+            <Parameter Name="dbName" Mode="In" Type="String" />
+            <Parameter Name="from" Mode="In" Type="String" />
+            <Parameter Name="to" Mode="In" Type="String" />
+            <Parameter Name="customer" Mode="In" Type="String" />
+            <Parameter Name="saler" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <EntityType Name="ar_customers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="n_customer_id" Type="Int32" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_customer_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ar_salesmen">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_salesman_id" Type="Int32" />
+          <Property Name="s_salesman_name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="n_CustomerCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Balance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_DbName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_TreasureName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_Value" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Expens">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_credit" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="n_debit" Type="Decimal" Precision="18" Scale="3" />
+          <Property Name="d_doc_date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_account_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="dx_expenses_PROC_Result">
+          <Property Type="Int32" Name="month" Nullable="true" />
+          <Property Type="Decimal" Name="value" Nullable="true" Precision="38" Scale="3" />
+        </ComplexType>
+        <ComplexType Name="dx_sales_proc_Result">
+          <Property Type="Int32" Name="nMonth" Nullable="true" />
+          <Property Type="Decimal" Name="nvalue" Nullable="true" Precision="38" Scale="3" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DashboardDBModelStoreContainer" CdmEntityContainer="DashboardDBEntities">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="DashboardDBModel.Company">
+              <MappingFragment StoreEntitySet="Companies">
+                <ScalarProperty Name="n_CompId" ColumnName="n_CompId" />
+                <ScalarProperty Name="s_CompName" ColumnName="s_CompName" />
+                <ScalarProperty Name="s_CompNameEng" ColumnName="s_CompNameEng" />
+                <ScalarProperty Name="s_dbName" ColumnName="s_dbName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ar_customers">
+            <EntityTypeMapping TypeName="DashboardDBModel.ar_customers">
+              <MappingFragment StoreEntitySet="ar_customers">
+                <ScalarProperty Name="s_customer_name" ColumnName="s_customer_name" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="n_customer_id" ColumnName="n_customer_id" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ar_salesmen">
+            <EntityTypeMapping TypeName="DashboardDBModel.ar_salesmen">
+              <MappingFragment StoreEntitySet="ar_salesmen">
+                <ScalarProperty Name="n_CustomerCount" ColumnName="n_CustomerCount" />
+                <ScalarProperty Name="s_salesman_name" ColumnName="s_salesman_name" />
+                <ScalarProperty Name="n_salesman_id" ColumnName="n_salesman_id" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Balances">
+            <EntityTypeMapping TypeName="DashboardDBModel.Balance">
+              <MappingFragment StoreEntitySet="Balances">
+                <ScalarProperty Name="s_Value" ColumnName="s_Value" />
+                <ScalarProperty Name="s_TreasureName" ColumnName="s_TreasureName" />
+                <ScalarProperty Name="s_DbName" ColumnName="s_DbName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Expenses">
+            <EntityTypeMapping TypeName="DashboardDBModel.Expens">
+              <MappingFragment StoreEntitySet="Expenses">
+                <ScalarProperty Name="s_account_no" ColumnName="s_account_no" />
+                <ScalarProperty Name="d_doc_date" ColumnName="d_doc_date" />
+                <ScalarProperty Name="n_debit" ColumnName="n_debit" />
+                <ScalarProperty Name="n_credit" ColumnName="n_credit" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="dx_expenses_PROC" FunctionName="DashboardDBModel.Store.dx_expenses_PROC">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DashboardDBModel.dx_expenses_PROC_Result">
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="value" ColumnName="value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="dx_sales_proc" FunctionName="DashboardDBModel.Store.dx_sales_proc">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DashboardDBModel.dx_sales_proc_Result">
+                <ScalarProperty Name="nMonth" ColumnName="nMonth" />
+                <ScalarProperty Name="nvalue" ColumnName="nvalue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
