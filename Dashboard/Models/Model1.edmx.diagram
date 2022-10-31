@@ -10,6 +10,9 @@
         <EntityTypeShape EntityType="DashboardDBModel.ar_salesmen" Width="1.5" PointX="2.875" PointY="2.25" />
         <EntityTypeShape EntityType="DashboardDBModel.Balance" Width="1.5" PointX="5.625" PointY="3.375" />
         <EntityTypeShape EntityType="DashboardDBModel.Expens" Width="1.5" PointX="1" PointY="3.5" />
+        <EntityTypeShape EntityType="DashboardDBModel.StoreValue" Width="1.5" PointX="0.75" PointY="6.75" />
+        <EntityTypeShape EntityType="DashboardDBModel.SalesByGroup" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DashboardDBModel.SalesByGroupQuantity" Width="1.5" PointX="5.375" PointY="6.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

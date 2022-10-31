@@ -32,6 +32,9 @@ namespace Dashboard.Models
         public virtual DbSet<ar_salesmen> ar_salesmen { get; set; }
         public virtual DbSet<Balance> Balances { get; set; }
         public virtual DbSet<Expens> Expenses { get; set; }
+        public virtual DbSet<StoreValue> StoreValues { get; set; }
+        public virtual DbSet<SalesByGroup> SalesByGroups { get; set; }
+        public virtual DbSet<SalesByGroupQuantity> SalesByGroupQuantities { get; set; }
     
         public virtual ObjectResult<dx_expenses_PROC_Result> dx_expenses_PROC(string dbName, string fROM, string tO)
         {

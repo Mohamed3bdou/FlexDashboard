@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+<link href="https://fonts.googleapis.com/earlyaccess/droidarabickufi.css" rel="stylesheet" />
+
+<div class="mt-4" style="margin-bottom:10px;">
+    <div class="col-lg-12 mb-lg-0 mb-4">
+        <div class="card z-index-2 h-100">
+            <div class="card-body p-3">
+
+                <center>
+                    <div class="col-xl-8">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1 text-right"></i>
+                                <span style="font-family: 'Droid Arabic Kufi', serif;font-weight:bold;">قيمة المخازن</span>
+                            </div>
+                            <div id="chart_container" class="chart chart-pie stores"><canvas id="pie_chart_stores"></canvas></div>
+                        </div>
+                    </div>
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4" style="margin-bottom:10px;">
+    <div class="col-lg-12 mb-lg-0 mb-4">
+        <div class="card z-index-2 h-100">
+            <div class="card-body p-3">
+
+                <center>
+                    <div class="col-xl-8">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1 text-right"></i>
+                                <span style="font-family: 'Droid Arabic Kufi', serif; font-weight: bold;">مبيعات حسب المجموعات قيم</span>
+                            </div>
+                            <div id="chart_container" class="chart chart-pie sales"><canvas id="pie_chart_sales"></canvas></div>
+                        </div>
+                    </div>
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-4" style="margin-bottom:10px;">
+    <div class="col-lg-12 mb-lg-0 mb-4">
+        <div class="card z-index-2 h-100">
+            <div class="card-body p-3">
+
+                <center>
+                    <div class="col-xl-8">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-chart-area me-1 text-right"></i>
+                                <span style="font-family: 'Droid Arabic Kufi', serif; font-weight: bold;">مبيعات حسب المجموعات كميات</span>
+                            </div>
+                            <div id="chart_container" class="chart chart-pie quantitySales"><canvas id="pie_chart_quantity_sales"></canvas></div>
+                        </div>
+                    </div>
+                </center>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            DrawCharts(null);
+            $("#CompId").on('change', function () {
+                var _database = $("#CompId").val();
+                DrawCharts(_database);
+            });
+        });
+
+        function DrawCharts(database) {
+            $("#pie_chart_stores").remove();
+            $("#pie_chart_sales").remove();
+            $("#pie_chart_quantity_sales").remove();
+
+            $(".stores").append('<canvas id="pie_chart_stores"></canvas>');
+            $(".sales").append('<canvas id="pie_chart_sales"></canvas>');
+            $(".quantitySales").append('<canvas id="pie_chart_quantity_sales"></canvas>');
+
+            $.ajax({
+                url: "@Url.Action("GetStoresValues", "Stores")",
+                type: "GET",
+                dataType: "json",
+                data: { dataBase: database },
+                success: function (data) {
+                    var labels = [], d = [], count = data.length;
+                    $.each(data, function (i, val) { labels.push(val.s_store_name); d.push(val.n_store_value) });
+                    new Chart("pie_chart_stores", {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Groups Sales',
+                                data: d,
+                                backgroundColor: generateRandomColor(count),
+                            }]
+                        },
+                    });
+                }
+            });
+
+            $.ajax({
+                url: "@Url.Action("GetGroupSales", "Stores")",
+                type: "GET",
+                dataType: "json",
+                data: { dataBase: database },
+                success: function (data) {
+                    var labels = [], d = [], count = data.length;
+                    $.each(data, function (i, val) { labels.push(val.s_GroupItem_name); d.push(val.n_value) });
+                    new Chart("pie_chart_sales", {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Groups Sales',
+                                data: d,
+                                backgroundColor: ["#2B0B3F", "#57167E", "#9B3192", "#EA5F89", "#F7B7A3", "#FFF1C9", "#9552EA", "#93F03B", "#F54F52", "#FFA32F", "#378AFF", "#FFEC21", "#2D87BB", "#64C2A6", "#AADEA7", "#E6F69D", "#FEAE65", "#F66D44", "#7CDDDD", "#007ED6", "#FF0000", "#FF7300", "#FFEC00", "#52D726", "#3D3D3D", "#C1C1C1", "#868686", "#000000", "2900A5", "#FFA9FD", "#FF77FD", "#FF00FE", "#C608D1", "#00F900", "#FFFDD3", "#003EFF", "#00AAFF", "#00DFFF"],
+                                borderColor: ["#2B0B3F", "#57167E", "#9B3192", "#EA5F89", "#F7B7A3", "#FFF1C9", "#9552EA", "#93F03B", "#F54F52", "#FFA32F", "#378AFF", "#FFEC21", "#2D87BB", "#64C2A6", "#AADEA7", "#E6F69D", "#FEAE65", "#F66D44", "#7CDDDD", "#007ED6", "#FF0000", "#FF7300", "#FFEC00", "#52D726", "#3D3D3D", "#C1C1C1", "#868686", "#000000", "2900A5", "#FFA9FD", "#FF77FD", "#FF00FE", "#C608D1", "#00F900", "#FFFDD3", "#003EFF", "#00AAFF", "#00DFFF"]
+                            }]
+                        },
+                    });
+                }
+            });
+
+            $.ajax({
+                url: "@Url.Action("GetGroupQuantitySales", "Stores")",
+                type: "GET",
+                dataType: "json",
+                data: { dataBase: database },
+                success: function (data) {
+                    var labels = [], d = [], count = data.length;
+                    $.each(data, function (i, val) { labels.push(val.s_GroupItem_name); d.push(val.n_value) });
+                    new Chart("pie_chart_quantity_sales", {
+                        type: 'pie',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Groups Quantity Sales',
+                                data: d,
+                                backgroundColor: ["#2B0B3F", "#57167E", "#9B3192", "#EA5F89", "#F7B7A3", "#FFF1C9", "#9552EA", "#93F03B", "#F54F52", "#FFA32F", "#378AFF", "#FFEC21", "#2D87BB", "#64C2A6", "#AADEA7", "#E6F69D", "#FEAE65", "#F66D44", "#7CDDDD", "#007ED6", "#FF0000", "#FF7300", "#FFEC00", "#52D726", "#3D3D3D", "#C1C1C1", "#868686", "#000000", "2900A5", "#FFA9FD", "#FF77FD", "#FF00FE", "#C608D1", "#00F900", "#FFFDD3", "#003EFF", "#00AAFF","#00DFFF"],
+                                borderColor: ["#2B0B3F", "#57167E", "#9B3192", "#EA5F89", "#F7B7A3", "#FFF1C9", "#9552EA", "#93F03B", "#F54F52", "#FFA32F", "#378AFF", "#FFEC21", "#2D87BB", "#64C2A6", "#AADEA7", "#E6F69D", "#FEAE65", "#F66D44", "#7CDDDD", "#007ED6", "#FF0000", "#FF7300", "#FFEC00", "#52D726", "#3D3D3D", "#C1C1C1", "#868686", "#000000", "2900A5", "#FFA9FD", "#FF77FD", "#FF00FE", "#C608D1", "#00F900", "#FFFDD3", "#003EFF", "#00AAFF", "#00DFFF"]
+                            }]
+                        },
+                    });
+                }
+            });
+        }
+
+        function generateRandomColor(count) {
+            var list = [];
+            for (var i = 0; i < count; i++) {
+                list.push('#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6));
+            }
+            return list;
+        }
+    </script>
+}
+

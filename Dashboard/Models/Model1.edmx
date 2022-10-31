@@ -53,6 +53,36 @@
           <Property Name="d_doc_date" Type="nvarchar" MaxLength="50" />
           <Property Name="s_account_no" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="SalesByGroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_GroupItem_no" Type="int" />
+          <Property Name="s_GroupItem_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_value" Type="decimal" Precision="18" Scale="3" />
+        </EntityType>
+        <EntityType Name="SalesByGroupQuantity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_GroupItem_no" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_GroupItem_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_value" Type="int" />
+        </EntityType>
+        <EntityType Name="StoreValues">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_store_id" Type="int" />
+          <Property Name="s_store_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_store_value" Type="decimal" Precision="18" Scale="3" />
+        </EntityType>
         <Function Name="dx_expenses_PROC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="dbName" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="FROM" Type="nvarchar" Mode="In" />
@@ -75,6 +105,9 @@
           <EntitySet Name="Balances" EntityType="Self.Balances" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesByGroup" EntityType="Self.SalesByGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SalesByGroupQuantity" EntityType="Self.SalesByGroupQuantity" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreValues" EntityType="Self.StoreValues" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -111,6 +144,9 @@
             <Parameter Name="dbName" Mode="In" Type="String" />
             <Parameter Name="month" Mode="In" Type="Int32" />
           </FunctionImport>
+          <EntitySet Name="StoreValues" EntityType="DashboardDBModel.StoreValue" />
+          <EntitySet Name="SalesByGroups" EntityType="DashboardDBModel.SalesByGroup" />
+          <EntitySet Name="SalesByGroupQuantities" EntityType="DashboardDBModel.SalesByGroupQuantity" />
         </EntityContainer>
         <EntityType Name="ar_customers">
           <Key>
@@ -165,6 +201,36 @@
           <Property Type="Decimal" Name="CurrentMonth" Nullable="true" Precision="38" Scale="3" />
           <Property Type="Decimal" Name="PreviousMonth" Nullable="true" Precision="38" Scale="3" />
         </ComplexType>
+        <EntityType Name="StoreValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_store_id" Type="Int32" />
+          <Property Name="s_store_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_store_value" Type="Decimal" Precision="18" Scale="3" />
+        </EntityType>
+        <EntityType Name="SalesByGroup">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_GroupItem_no" Type="Int32" />
+          <Property Name="s_GroupItem_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_value" Type="Decimal" Precision="18" Scale="3" />
+        </EntityType>
+        <EntityType Name="SalesByGroupQuantity">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_GroupItem_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_GroupItem_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_value" Type="Int32" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -250,6 +316,39 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <EntitySetMapping Name="StoreValues">
+            <EntityTypeMapping TypeName="DashboardDBModel.StoreValue">
+              <MappingFragment StoreEntitySet="StoreValues">
+                <ScalarProperty Name="n_store_value" ColumnName="n_store_value" />
+                <ScalarProperty Name="s_store_name" ColumnName="s_store_name" />
+                <ScalarProperty Name="n_store_id" ColumnName="n_store_id" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesByGroups">
+            <EntityTypeMapping TypeName="DashboardDBModel.SalesByGroup">
+              <MappingFragment StoreEntitySet="SalesByGroup">
+                <ScalarProperty Name="n_value" ColumnName="n_value" />
+                <ScalarProperty Name="s_GroupItem_name" ColumnName="s_GroupItem_name" />
+                <ScalarProperty Name="n_GroupItem_no" ColumnName="n_GroupItem_no" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SalesByGroupQuantities">
+            <EntityTypeMapping TypeName="DashboardDBModel.SalesByGroupQuantity">
+              <MappingFragment StoreEntitySet="SalesByGroupQuantity">
+                <ScalarProperty Name="n_value" ColumnName="n_value" />
+                <ScalarProperty Name="s_GroupItem_name" ColumnName="s_GroupItem_name" />
+                <ScalarProperty Name="s_GroupItem_no" ColumnName="s_GroupItem_no" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

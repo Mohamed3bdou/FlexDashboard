@@ -15,7 +15,7 @@ namespace Dashboard.Controllers
         {
             if (Session["UserName"] == null)
             {
-                return RedirectToAction("Login");
+                return RedirectToAction("Login", "Base");
             }
             else
             {
