@@ -12,6 +12,8 @@ namespace Dashboard.Controllers
 {
     public class BaseController : Controller
     {
+        DashboardDBEntities db = new DashboardDBEntities();
+
         #region Login
         [ActionName("Login")]
         public ActionResult Login()
@@ -25,10 +27,9 @@ namespace Dashboard.Controllers
         {
             string userName = obj["userName"];
             string password = obj["password"];
+            var user = db.TbUsers.Where(x => x.s_userName.Equals(userName) && x.s_password.Equals(password)).FirstOrDefault();
 
-            Configuration webConfigApp = WebConfigurationManager.OpenWebConfiguration("~");
-
-            if (userName == webConfigApp.AppSettings.Settings["UserName"].Value && password == webConfigApp.AppSettings.Settings["Password"].Value)
+            if (user != null)
             {
                 Session["UserName"] = obj["userName"];
                 ViewBag.result = "Successful";
@@ -48,7 +49,7 @@ namespace Dashboard.Controllers
             FormsAuthentication.SignOut();
             Session.Clear();
             Session.Abandon();
-            return RedirectToAction("Login", "Home");
+            return RedirectToAction("Login", "Base");
         }
         #endregion
     }

@@ -35,6 +35,10 @@ namespace Dashboard.Models
         public virtual DbSet<StoreValue> StoreValues { get; set; }
         public virtual DbSet<SalesByGroup> SalesByGroups { get; set; }
         public virtual DbSet<SalesByGroupQuantity> SalesByGroupQuantities { get; set; }
+        public virtual DbSet<BranchCustomerBalance> BranchCustomerBalances { get; set; }
+        public virtual DbSet<Branch> Branches { get; set; }
+        public virtual DbSet<BranchesTreasureBalance> BranchesTreasureBalances { get; set; }
+        public virtual DbSet<TbUser> TbUsers { get; set; }
     
         public virtual ObjectResult<dx_expenses_PROC_Result> dx_expenses_PROC(string dbName, string fROM, string tO)
         {
@@ -89,6 +93,56 @@ namespace Dashboard.Models
                 new ObjectParameter("month", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dx_monthly_expenses_Result>("dx_monthly_expenses", dbNameParameter, monthParameter);
+        }
+    
+        public virtual ObjectResult<dx_expenses_proc_Branch_Result> dx_expenses_proc_Branch(string dbName, string fROM, string tO, Nullable<int> branchId)
+        {
+            var dbNameParameter = dbName != null ?
+                new ObjectParameter("dbName", dbName) :
+                new ObjectParameter("dbName", typeof(string));
+    
+            var fROMParameter = fROM != null ?
+                new ObjectParameter("FROM", fROM) :
+                new ObjectParameter("FROM", typeof(string));
+    
+            var tOParameter = tO != null ?
+                new ObjectParameter("tO", tO) :
+                new ObjectParameter("tO", typeof(string));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("branchId", branchId) :
+                new ObjectParameter("branchId", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dx_expenses_proc_Branch_Result>("dx_expenses_proc_Branch", dbNameParameter, fROMParameter, tOParameter, branchIdParameter);
+        }
+    
+        public virtual ObjectResult<dx_sales_proc_Branch_Result> dx_sales_proc_Branch(string dbName, Nullable<int> branchId, string from, string to, string customer, string saler)
+        {
+            var dbNameParameter = dbName != null ?
+                new ObjectParameter("dbName", dbName) :
+                new ObjectParameter("dbName", typeof(string));
+    
+            var branchIdParameter = branchId.HasValue ?
+                new ObjectParameter("branchId", branchId) :
+                new ObjectParameter("branchId", typeof(int));
+    
+            var fromParameter = from != null ?
+                new ObjectParameter("from", from) :
+                new ObjectParameter("from", typeof(string));
+    
+            var toParameter = to != null ?
+                new ObjectParameter("to", to) :
+                new ObjectParameter("to", typeof(string));
+    
+            var customerParameter = customer != null ?
+                new ObjectParameter("customer", customer) :
+                new ObjectParameter("customer", typeof(string));
+    
+            var salerParameter = saler != null ?
+                new ObjectParameter("saler", saler) :
+                new ObjectParameter("saler", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<dx_sales_proc_Branch_Result>("dx_sales_proc_Branch", dbNameParameter, branchIdParameter, fromParameter, toParameter, customerParameter, salerParameter);
         }
     }
 }

@@ -33,6 +33,36 @@
           <Property Name="s_TreasureName" Type="nvarchar" MaxLength="50" />
           <Property Name="s_Value" Type="nvarchar" MaxLength="50" />
         </EntityType>
+        <EntityType Name="BranchCustomerBalance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_branch_id" Type="int" Nullable="false" />
+          <Property Name="s_branch_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_customer_balance" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Branches">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_branch_id" Type="int" />
+          <Property Name="s_branch_name" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="BranchesTreasureBalance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="s_dbname" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_branch_no" Type="int" />
+          <Property Name="n_cash_id" Type="int" />
+          <Property Name="s_cash_name" Type="nvarchar" MaxLength="50" />
+          <Property Name="n_treasure_balance" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <EntityType Name="Companies">
           <Key>
             <PropertyRef Name="n_CompId" />
@@ -83,10 +113,24 @@
           <Property Name="s_store_name" Type="nvarchar" MaxLength="50" />
           <Property Name="n_store_value" Type="decimal" Precision="18" Scale="3" />
         </EntityType>
+        <EntityType Name="TbUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="s_userName" Type="nvarchar" MaxLength="50" />
+          <Property Name="s_password" Type="nvarchar" MaxLength="50" />
+        </EntityType>
         <Function Name="dx_expenses_PROC" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="dbName" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="FROM" Type="nvarchar" Mode="In" />
           <Parameter Name="tO" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="dx_expenses_proc_Branch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dbName" Type="nvarchar" Mode="In" />
+          <Parameter Name="FROM" Type="nvarchar" Mode="In" />
+          <Parameter Name="tO" Type="nvarchar" Mode="In" />
+          <Parameter Name="branchId" Type="int" Mode="In" />
         </Function>
         <Function Name="dx_monthly_expenses" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="dbName" Type="nvarchar(max)" Mode="In" />
@@ -99,15 +143,27 @@
           <Parameter Name="customer" Type="nvarchar" Mode="In" />
           <Parameter Name="saler" Type="nvarchar" Mode="In" />
         </Function>
+        <Function Name="dx_sales_proc_Branch" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="dbName" Type="nvarchar" Mode="In" />
+          <Parameter Name="branchId" Type="int" Mode="In" />
+          <Parameter Name="from" Type="nvarchar" Mode="In" />
+          <Parameter Name="to" Type="nvarchar" Mode="In" />
+          <Parameter Name="customer" Type="nvarchar" Mode="In" />
+          <Parameter Name="saler" Type="nvarchar" Mode="In" />
+        </Function>
         <EntityContainer Name="DashboardDBModelStoreContainer">
           <EntitySet Name="ar_customers" EntityType="Self.ar_customers" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ar_salesmen" EntityType="Self.ar_salesmen" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Balances" EntityType="Self.Balances" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BranchCustomerBalance" EntityType="Self.BranchCustomerBalance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Branches" EntityType="Self.Branches" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="BranchesTreasureBalance" EntityType="Self.BranchesTreasureBalance" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Companies" EntityType="Self.Companies" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Expenses" EntityType="Self.Expenses" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesByGroup" EntityType="Self.SalesByGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="SalesByGroupQuantity" EntityType="Self.SalesByGroupQuantity" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreValues" EntityType="Self.StoreValues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TbUsers" EntityType="Self.TbUsers" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -147,6 +203,24 @@
           <EntitySet Name="StoreValues" EntityType="DashboardDBModel.StoreValue" />
           <EntitySet Name="SalesByGroups" EntityType="DashboardDBModel.SalesByGroup" />
           <EntitySet Name="SalesByGroupQuantities" EntityType="DashboardDBModel.SalesByGroupQuantity" />
+          <EntitySet Name="BranchCustomerBalances" EntityType="DashboardDBModel.BranchCustomerBalance" />
+          <EntitySet Name="Branches" EntityType="DashboardDBModel.Branch" />
+          <EntitySet Name="BranchesTreasureBalances" EntityType="DashboardDBModel.BranchesTreasureBalance" />
+          <FunctionImport Name="dx_expenses_proc_Branch" ReturnType="Collection(DashboardDBModel.dx_expenses_proc_Branch_Result)">
+            <Parameter Name="dbName" Mode="In" Type="String" />
+            <Parameter Name="FROM" Mode="In" Type="String" />
+            <Parameter Name="tO" Mode="In" Type="String" />
+            <Parameter Name="branchId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="dx_sales_proc_Branch" ReturnType="Collection(DashboardDBModel.dx_sales_proc_Branch_Result)">
+            <Parameter Name="dbName" Mode="In" Type="String" />
+            <Parameter Name="branchId" Mode="In" Type="Int32" />
+            <Parameter Name="from" Mode="In" Type="String" />
+            <Parameter Name="to" Mode="In" Type="String" />
+            <Parameter Name="customer" Mode="In" Type="String" />
+            <Parameter Name="saler" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="TbUsers" EntityType="DashboardDBModel.TbUser" />
         </EntityContainer>
         <EntityType Name="ar_customers">
           <Key>
@@ -230,6 +304,54 @@
           <Property Name="s_GroupItem_no" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="s_GroupItem_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="n_value" Type="Int32" />
+        </EntityType>
+        <EntityType Name="BranchCustomerBalance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_branch_id" Type="Int32" Nullable="false" />
+          <Property Name="s_branch_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_customer_balance" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_branch_id" Type="Int32" />
+          <Property Name="s_branch_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="BranchesTreasureBalance">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="s_dbname" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_branch_no" Type="Int32" />
+          <Property Name="n_cash_id" Type="Int32" />
+          <Property Name="s_cash_name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="n_treasure_balance" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <ComplexType Name="dx_expenses_proc_Branch_Result">
+          <Property Type="Int32" Name="n_branch_id" Nullable="true" />
+          <Property Type="Int32" Name="month" Nullable="true" />
+          <Property Type="Decimal" Name="value" Nullable="true" Precision="38" Scale="3" />
+        </ComplexType>
+        <ComplexType Name="dx_sales_proc_Branch_Result">
+          <Property Type="Int32" Name="n_branch_id" Nullable="true" />
+          <Property Type="Int32" Name="nMonth" Nullable="true" />
+          <Property Type="Decimal" Name="nvalue" Nullable="true" Precision="38" Scale="3" />
+        </ComplexType>
+        <EntityType Name="TbUser">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="s_userName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="s_password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -345,6 +467,66 @@
                 <ScalarProperty Name="s_GroupItem_name" ColumnName="s_GroupItem_name" />
                 <ScalarProperty Name="s_GroupItem_no" ColumnName="s_GroupItem_no" />
                 <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BranchCustomerBalances">
+            <EntityTypeMapping TypeName="DashboardDBModel.BranchCustomerBalance">
+              <MappingFragment StoreEntitySet="BranchCustomerBalance">
+                <ScalarProperty Name="n_customer_balance" ColumnName="n_customer_balance" />
+                <ScalarProperty Name="s_branch_name" ColumnName="s_branch_name" />
+                <ScalarProperty Name="n_branch_id" ColumnName="n_branch_id" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="DashboardDBModel.Branch">
+              <MappingFragment StoreEntitySet="Branches">
+                <ScalarProperty Name="s_branch_name" ColumnName="s_branch_name" />
+                <ScalarProperty Name="n_branch_id" ColumnName="n_branch_id" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BranchesTreasureBalances">
+            <EntityTypeMapping TypeName="DashboardDBModel.BranchesTreasureBalance">
+              <MappingFragment StoreEntitySet="BranchesTreasureBalance">
+                <ScalarProperty Name="n_treasure_balance" ColumnName="n_treasure_balance" />
+                <ScalarProperty Name="s_cash_name" ColumnName="s_cash_name" />
+                <ScalarProperty Name="n_cash_id" ColumnName="n_cash_id" />
+                <ScalarProperty Name="n_branch_no" ColumnName="n_branch_no" />
+                <ScalarProperty Name="s_dbname" ColumnName="s_dbname" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="dx_expenses_proc_Branch" FunctionName="DashboardDBModel.Store.dx_expenses_proc_Branch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DashboardDBModel.dx_expenses_proc_Branch_Result">
+                <ScalarProperty Name="n_branch_id" ColumnName="n_branch_id" />
+                <ScalarProperty Name="month" ColumnName="month" />
+                <ScalarProperty Name="value" ColumnName="value" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="dx_sales_proc_Branch" FunctionName="DashboardDBModel.Store.dx_sales_proc_Branch">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DashboardDBModel.dx_sales_proc_Branch_Result">
+                <ScalarProperty Name="n_branch_id" ColumnName="n_branch_id" />
+                <ScalarProperty Name="nMonth" ColumnName="nMonth" />
+                <ScalarProperty Name="nvalue" ColumnName="nvalue" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <EntitySetMapping Name="TbUsers">
+            <EntityTypeMapping TypeName="DashboardDBModel.TbUser">
+              <MappingFragment StoreEntitySet="TbUsers">
+                <ScalarProperty Name="s_password" ColumnName="s_password" />
+                <ScalarProperty Name="s_userName" ColumnName="s_userName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
               </MappingFragment>
             </EntityTypeMapping>

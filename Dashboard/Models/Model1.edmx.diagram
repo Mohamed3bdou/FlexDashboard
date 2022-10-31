@@ -13,6 +13,10 @@
         <EntityTypeShape EntityType="DashboardDBModel.StoreValue" Width="1.5" PointX="0.75" PointY="6.75" />
         <EntityTypeShape EntityType="DashboardDBModel.SalesByGroup" Width="1.5" PointX="3.375" PointY="6.75" />
         <EntityTypeShape EntityType="DashboardDBModel.SalesByGroupQuantity" Width="1.5" PointX="5.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DashboardDBModel.BranchCustomerBalance" Width="1.5" PointX="7.375" PointY="6.75" />
+        <EntityTypeShape EntityType="DashboardDBModel.Branch" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="DashboardDBModel.BranchesTreasureBalance" Width="1.5" PointX="8.375" PointY="3.75" />
+        <EntityTypeShape EntityType="DashboardDBModel.TbUser" Width="1.5" PointX="0.75" PointY="9.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
